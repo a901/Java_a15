@@ -8,13 +8,13 @@ public class B {
 	
 	String name,midname,surname;
 	
-	int fa,ma,wi=-1,sex=0,bornyear;//sex=1 man sex=2 woman
+	int fa,ma,wi=-1,sex=0,bornyear;//sex=1 man sex=0 woman
 	int dieyear=0;
 	
 	Vector kid;
 	int kidn=0;
 		
-	short gene[];
+	boolean gene[];
 	int gene_f,gene_m;
 	
 	int trait[];
@@ -49,7 +49,8 @@ public class B {
 	
 
 	
-	
+	int descendants_count[];
+	int descendants_count_year[];
 	B(int kk,String name0,String midname0, int sex0,int year,int f,int m,int hh,int tr0)
 	{
 		
@@ -73,11 +74,14 @@ public class B {
 		//kid=new int[41];
 
 		
-		gene=new short[51];
+		gene=new boolean[300];
 		trait=new int[10];
 		
 		wi_r=new int[11];
 		wi_r2=new short[11];
+		
+		descendants_count=new int[4];
+		descendants_count_year=new int[4];
 		
 		if(fa>-1&&ma>-1)
 		{
@@ -98,23 +102,27 @@ public class B {
 		else {
 			for(int z=0;z<45;z++)
 			{
-					gene[z]=(short) ((short)(Math.random()*(11127+z*1101))%31111);
+					//gene[z]=(short) ((short)(Math.random()*(11127+z*1101))%31111);
 			}
-			gene_f=(short)(Math.random()*(1111323))%1010111;
-			gene_m=(short)(Math.random()*(1313123))%1010131;
+			gene_f=(short)kk;
+			gene_m=(short)kk;
 			
-			for(int z=45;z<50;z++)
-			gene[z]=(short)tr0;
-						
+			for(int z=0;z<300;z++) {
+				if(z%a15.a1.origin_trn==tr0)
+					gene[z]=true;
+				else
+					gene[z]=false;		
+			}				
 		}
+		
 		for(int z=0;z<10;z++)
 		{
 			trait[z]=(int)(Math.random()*(1111123))%1010171;
 		}
 		
-		strong=(int)(Math.random()*(15117))%61+gene[2]%11+gene[8]%11+gene[12]%11+gene[18]%11;
-		look=(int)(Math.random()*(11137))%61+gene[3]%11+gene[7]%11+gene[13]%11+gene[17]%11;
-		health=(int)(Math.random()*(11137))%61+gene[4]%11+gene[6]%11+gene[14]%11+gene[16]%11;
+		strong=(int)(Math.random()*(15117))%101;
+		look=(int)(Math.random()*(11137))%101;
+		health=(int)(Math.random()*(11137))%101;
 		
 		
 		
@@ -169,11 +177,19 @@ public class B {
 		kidn++;
 	}
 	
+	
+
 	int count_descendants(int start,int type,int v)
 	{
 		if(count>0) return 0;
-		
 		count=1;
+		
+		//if(descendants_count_year[type]==a15.a1.year)
+			//return descendants_count[type];
+		
+		
+		
+		
 		int n=0;
 		if(live>-1&&v!=0&&start!=this_k)n++;
 		
@@ -194,9 +210,13 @@ public class B {
 			clear();
 			
 		}
+		descendants_count_year[type]=a15.a1.year;
+		descendants_count[type]=n;
 		
 		return n;
 	}
+	
+	
 	void clear()
 	{
 		for(int z=0;z<a15.a1.bn;z++)
@@ -233,11 +253,11 @@ public class B {
 	
 	int violence()
 	{
-		return trait[3]%61+gene[31]%11+gene[32]%11+gene[33]%11+gene[34]%11;
+		return trait[3]%101;
 	}
 	int smart()
 	{
-		return trait[4]%71+gene[41]%11+gene[42]%11+gene[43]%11; 
+		return trait[4]%101; 
 	}
 	
 	String sex() {

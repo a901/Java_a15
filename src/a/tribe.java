@@ -459,9 +459,22 @@ public class tribe {
 	{
 		int id=0;
 		
-		g=a15.a1.b[fa].gene[1]%5+a15.a1.b[fa].gene[5]%5+a15.a1.b[fa].trait[0]%15+4;
+		g=a15.a1.b[fa].trait[0]%15+4;
+		if(a15.a1.b[fa].gene[0])
+			g+=3;
+		if(a15.a1.b[fa].gene[1])
+			g+=3;
+		if(a15.a1.b[fa].gene[2])
+			g+=3;
 		
-		g+=a15.a1.b[ma].gene[1]%5+a15.a1.b[ma].gene[5]%5+a15.a1.b[ma].trait[0]%15+4;
+		g+=a15.a1.b[ma].trait[0]%15+4;
+		
+		if(a15.a1.b[ma].gene[0])
+			g+=3;
+		if(a15.a1.b[ma].gene[1])
+			g+=3;
+		if(a15.a1.b[ma].gene[2])
+			g+=3;
 		
 		if(g>=30)g+=15;
 		
@@ -689,7 +702,7 @@ public class tribe {
 						if(vv<1)vv=1;
 						bm=a15.a1.tr[gk].masskill(vv,"被敵對部落屠戮");
 					}
-					addhis("攻擊"+a15.a1.tr[gk].name+"部落，戰勝，戰死"+die+"人，殺敵"+die2+"人，屠戮敵方"+bm+"人 ("+m1+"vs"+m2+")優勢:"+pow);
+					addhis("攻擊"+a15.a1.tr[gk].name+"部落，戰勝，戰死"+die+"人，殺敵"+die2+"人，減損敵方"+bm+"人 ("+m1+"vs"+m2+")優勢:"+pow);
 					
 					a15.a1.tr[gk].addhis("受"+a15.a1.tr[this_k].name+"部落襲擊，戰敗，戰死"+die2+"人，殺敵"+die+"人，被敵屠戮"+bm+"人 ("+m2+"vs"+m1+")優勢:"+(-pow));
 				}
@@ -1250,7 +1263,7 @@ public class tribe {
 			{
 				if(house[h][z]==q)
 				{
-					die(h,z,"殉葬其夫");
+					die(h,z,"殉葬");
 					break;
 				}
 			}
@@ -1262,7 +1275,7 @@ public class tribe {
 			{
 				if(house[h][z]==q)
 				{
-					die(h,z,"自盡殉夫");
+					die(h,z,"自盡殉葬");
 					break;
 				}
 			}
@@ -1283,7 +1296,12 @@ public class tribe {
 				if(house[x][z]==leader) continue;
 				
 				
-				if((int)(Math.random()*17227)%(level+1)<1)
+				if((int)(Math.random()*17227)%(level+1)<1 && a15.a1.b[house[x][z]].sex==1 && a15.a1.b[house[x][z]].age()>14)
+				{
+					die(x,z,r);nn++;
+					z--;
+				}
+				else if((int)(Math.random()*17227)%(level*2+1)<1 &&( a15.a1.b[house[x][z]].sex==0 || a15.a1.b[house[x][z]].age()<=14))
 				{
 					die(x,z,r);nn++;
 					z--;

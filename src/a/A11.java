@@ -58,7 +58,11 @@ public class A11 implements Serializable {
 	int lgn=0;
 	
 	int trn=0;
+	int origin_trn=3;
+	
 	int bn=0;
+	int start_bn=0;
+	
 	int mapf[][];
 	
 	int oldmap[][][];
@@ -89,7 +93,7 @@ public class A11 implements Serializable {
 	{
 		
 		
-		tr= new tribe[3101];
+		tr= new tribe[113101];
 		b= new B[31010101];
 		
 		lg=new language[13010];
@@ -100,7 +104,7 @@ public class A11 implements Serializable {
 
 		mapf=new int[50][50];
 		
-		pop_history=new int[10101];
+		pop_history=new int[101010];
 		
 		oldmap=new int[100][50][50];
 		cmap=new int[50][50];
@@ -269,22 +273,27 @@ public class A11 implements Serializable {
 	}
 	
 	void test() {
-		
+		origin_trn=4;
 		create_tri(15,13,60);
 		create_tri(15,15,60);
 		create_tri(14,14,100);
 		create_tri(16,15,100);
+		
 	}
 	
 	void start()
 	{
-		//test();
 		
 		
+		origin_trn=3;
 		create_tri(18,7,0);
 		create_tri(10,20,50);
 		create_tri(25,20,100);
 		
+		//test();
+		
+		
+		start_bn=bn;
 		//max_heap();
 		
 		map1();
@@ -705,6 +714,7 @@ public class A11 implements Serializable {
 		
 		a15.setb(4,800,50,120,40,"人口史");
 		a15.setb(5,800,100,120,40,"歷史遺址");
+		a15.setb(6,800,150,120,40,"歷史分析");
 		
 		
 		mapx=1000;
@@ -769,6 +779,13 @@ public class A11 implements Serializable {
 							break;
 					    }
 						
+						if(a15.g0==6)
+						{
+							page=0;						
+							a15.g0=0;
+							show_analyze();
+							break;
+					    }
 						
 						if(a15.g0==0&&mapx<40&&mapy<30)
 						{
@@ -1500,6 +1517,192 @@ public class A11 implements Serializable {
 				 } 	 } } );   t2.start();
 	}
 	
+	void show_analyze()
+	{
+
+		if(k==-1)
+		{
+			map2();
+			return;
+		}
+		
+		int fn=0;
+		int mn=0;
+		int alln=0;
+		
+		int f_num[]=new int[1000];
+		int m_num[]=new int[1000];
+		int all_num[]=new int[1000];
+		int kk;
+		for(int x=0;x<start_bn;x++)
+		{
+			int f_alive=b[x].count_descendants(x, 1, 1);//male descendants
+			//int f_all=b[x].count_descendants(x, 1, 0);
+			
+			int m_alive=b[x].count_descendants(x, 0, 1);//female descendants alive
+			//int m_all=b[x].count_descendants(x, 0, 0);//female descendants all
+			
+			int all_alive=b[x].count_descendants(x, 2, 1);//all descendants
+			//int all_all=b[x].count_descendants(x, 2, 0);
+			
+			
+			f_num[fn]=f_alive;
+			for(int j=fn;j>0;j--)
+			{
+				if(f_alive>f_num[j-1])
+				{
+					kk=f_num[j];
+					f_num[j]=f_num[j-1];
+					f_num[j-1]=kk;
+				}
+				else
+					break;	
+			}
+			
+			m_num[fn]=m_alive;
+			for(int j=fn;j>0;j--)
+			{
+				if(m_alive>m_num[j-1])
+				{
+					kk=m_num[j];
+					m_num[j]=m_num[j-1];
+					m_num[j-1]=kk;
+				}
+				else
+					break;	
+			}
+			
+			all_num[fn]=all_alive;
+			for(int j=fn;j>0;j--)
+			{
+				if(all_alive>all_num[j-1])
+				{
+					kk=all_num[j];
+					all_num[j]=all_num[j-1];
+					all_num[j-1]=kk;
+				}
+				else
+					break;	
+			}
+			
+			if(f_alive>0)fn++;
+			if(m_alive>0)mn++;
+			if(all_alive>0)alln++;
+		}
+		
+		
+		a15.clean();
+
+		a15.seta(0, 10, 1600, 750,"217");
+		a15.seta(0, 500, 600, 280,"talk");
+						
+		a15.setbl(1,780,30,800,30,1,"歷史分析");
+		
+		if(page==0) {
+			a15.setbl(2,780,100,800,30,1,"初始人物共 "+(start_bn)+"人");	
+			a15.setbl(3,780,150,800,30,1,"有留下父系後裔者 "+(fn)+"人");	
+			a15.setbl(4,780,200,800,30,1,"有留下母系後裔者 "+(fn)+"人");	
+			a15.setbl(5,780,250,800,30,1,"有留下後裔者 "+(alln)+"人");
+		}
+		else if(page==1) {
+			
+			a15.setbl(2,780,100,800,30,1,"父系後裔總數排名");
+			for(int i=0;i<6;i++)
+			{
+				a15.setbl(3+i,780,150+50*i,800,30,1,"第"+(i+1)+"名 後裔"+(f_num[i])+"人");	
+			}
+			for(int i=fn-2;i<fn;i++)
+			{
+				a15.setbl(11+(i-fn),780,150+50*(8+(i-fn)),800,30,1,"第"+(i+1)+"名 後裔"+(f_num[i])+"人");	
+			}
+		}
+		else if(page==2) {
+			
+			a15.setbl(2,780,100,800,30,1,"母系後裔總數排名");
+			for(int i=0;i<6;i++)
+			{
+				a15.setbl(3+i,780,150+50*i,800,30,1,"第"+(i+1)+"名 後裔"+(m_num[i])+"人");	
+			}
+			for(int i=mn-2;i<mn;i++)
+			{
+				a15.setbl(11+(i-mn),780,150+50*(8+(i-mn)),800,30,1,"第"+(i+1)+"名 後裔"+(m_num[i])+"人");	
+			}
+		}
+		else if(page==3) {
+			
+			a15.setbl(2,780,100,800,30,1,"後裔總數排名");
+			for(int i=0;i<6;i++)
+			{
+				a15.setbl(3+i,780,150+50*i,800,30,1,"第"+(i+1)+"名 後裔"+(all_num[i])+"人");	
+			}
+			for(int i=alln-2;i<alln;i++)
+			{
+				a15.setbl(11+(i-alln),780,150+50*(8+(i-alln)),800,30,1,"第"+(i+1)+"名 後裔"+(all_num[i])+"人");	
+			}
+		}
+		
+		
+		a15.g0=0;
+		
+		
+		
+		
+		for(int x=0;x<10;x++)
+		{
+			//if(page+x>=tr[k].his_n)
+				break;
+			
+			//a15.setbl(10+x,625,80+x*35,800,35,1,tr[k].history[page+x]);
+					
+		}
+			
+			if(page>0)
+				a15.setb(8,950,450,100,40,"上一頁");
+			else 
+				a15.cleanb(8);
+			
+			if(page<3)
+				a15.setb(9,950,500,100,40,"下一頁");
+			else
+				a15.cleanb(9);
+		
+		//a15.setb(7,1100,450,100,40,"末頁");
+
+		a15.setb(5,1100,500,100,40, "返回");
+
+		
+		 Thread t2= new Thread( new Runnable(){
+				 public void run(){	  try {
+					 
+					 for (int i = 1; i < 700;) {
+											
+									
+						if(a15.g0==8)
+						{		
+							if(page>0)
+							page-=1;
+							
+							show_analyze();
+							break;		
+						}			
+						if(a15.g0==9)
+						{					
+							page+=1;
+							show_analyze();
+							break;						
+						}	
+						if(a15.g0==5)
+						{
+							page=0;
+							map1();
+							break;	
+						}
+							 Thread.sleep(speed);
+					}
+				 
+				 } catch (Exception e) {  e.printStackTrace();
+				 } 	 } } );   t2.start();
+	}
 	
 	int addman(int sex,int age,int h,int tr)
 	{
