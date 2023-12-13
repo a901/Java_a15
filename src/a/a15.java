@@ -70,9 +70,9 @@ public class a15 extends JFrame   implements Serializable {
 	static public int dx=0,dy=0;
 	 
 	JLabel dd;
-	Image img,bi,bi2;
+	Image img,bi,bi2,tmp;
 	 JLabel lb ;
-	Graphics g;
+	Graphics g,gt;
 	 ImageIcon d ;
  
 	//static key kk;
@@ -104,7 +104,9 @@ public class a15 extends JFrame   implements Serializable {
 		 	an=0;
 	 
 		 	img = createImage(1220, 650);
+		 	tmp = createImage(1220, 650);
 		 	g = img.getGraphics(); //
+		 	gt = tmp.getGraphics();
 		 	d = new ImageIcon(img);
 	
 		 
@@ -482,7 +484,7 @@ static int keystate=0,keydelay=0,nstart=0,state=1;
 
 public void paint(Graphics g1){
 	
-	g.clearRect(0, 0,1220, 650);
+	
 	if(state==1)
 		pa1(g);
 	else if(state==2)
@@ -514,7 +516,7 @@ public void pa10(Graphics g)
 				e2.printStackTrace();
 			}
 		g.drawImage(bi, a[z][1],a[z][2],a[z][3],a[z][4],null);	
-		System.out.print("pa2  a["+z+"][1]="+a[z][1]+" \n");  
+		//System.out.print("pa2  a["+z+"][1]="+a[z][1]+" \n");  
 
 	}
 
@@ -556,7 +558,11 @@ void start()
 public void pa1(Graphics g)// 大地圖
 {
 	int k=0,k2,gg,g2;
+	
 	//System.out.print("pa0 \n");  
+	
+	gt.clearRect(0, 0,1220, 650);
+	
 	for(int x=0;x<40;x++)
 	{
 		for(int z=0;z<30;z++)
@@ -570,11 +576,11 @@ public void pa1(Graphics g)// 大地圖
 				if(a1.tr[a1.bigmap[x][z]-10].language_gf!=a1.tr[a1.bigmap[x][z]-10].language_f)
 					bi2 = paint.m_tr2[gg%4][g2%7];	
 					
-				g.drawImage(bi2,10+x*20,10+z*20,19,19,null);
+				gt.drawImage(bi2,10+x*20,10+z*20,19,19,null);
 				if(a1.tr[a1.bigmap[x][z]-10].live<0)
 				{
 					bi2 = paint.extinction;
-					g.drawImage(bi2,10+x*20,10+z*20,19,19,null);
+					gt.drawImage(bi2,10+x*20,10+z*20,19,19,null);
 				}
 			}
 			else { 
@@ -588,7 +594,7 @@ public void pa1(Graphics g)// 大地圖
 				else if(a1.landmap[x][z]==3)
 					bi2 = paint.pic[3];	
 	
-				g.drawImage(bi2,10+x*20,10+z*20,19,19,null);	// dd.setBounds(0,0,1050+i/2,600);	
+				gt.drawImage(bi2,10+x*20,10+z*20,19,19,null);	// dd.setBounds(0,0,1050+i/2,600);	
 			}
 			
 			
@@ -602,7 +608,11 @@ public void pa1(Graphics g)// 大地圖
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-	g.drawImage(bi, 750,0,600,700,null);	
+	gt.drawImage(bi, 750,0,600,700,null);	
+	
+	
+	g.clearRect(0, 0,1220, 650);
+	g.drawImage(tmp, 0,0,1220,650,null);	
 	
 	//System.out.print("print pp"+dx+" "+dy+"\n");  
 
@@ -613,6 +623,8 @@ public void pa2(Graphics g)//中地圖
 	int k=0,k2;
 		
 	//System.out.print("pa0 \n");  
+	//g.clearRect(0, 0,1220, 650);
+	gt.clearRect(0, 0,1220, 650);
 	for(int x=0;x<15;x++)
 	{
 		for(int z=0;z<15;z++)
@@ -621,19 +633,19 @@ public void pa2(Graphics g)//中地圖
 			bi2 = paint.pic[1];	
 	
 			
-			g.drawImage(bi2,10+x*40,10+z*40,38,38,null);	// dd.setBounds(0,0,1050+i/2,600);	
+			gt.drawImage(bi2,10+x*40,10+z*40,38,38,null);	// dd.setBounds(0,0,1050+i/2,600);	
 			
 			if(a15.a1.c_tri>=0)
 			{
 				if(a15.a1.tr[a15.a1.c_tri].house_n[x*15+z]>0) {
 					
 					bi2 = paint.house;
-					g.drawImage(bi2,10+x*40,10+z*40,38,38,null);	// dd.setBounds(0,0,1050+i/2,600);
+					gt.drawImage(bi2,10+x*40,10+z*40,38,38,null);	// dd.setBounds(0,0,1050+i/2,600);
 			
 					if(a15.a1.tr[a15.a1.c_tri].house[x*15+z][0]==a15.a1.tr[a15.a1.c_tri].leader)
 					{
 						bi2 = paint.light;
-						g.drawImage(bi2,10+x*40,10+z*40,38,38,null);	// dd.setBounds(0,0,1050+i/2,600);
+						gt.drawImage(bi2,10+x*40,10+z*40,38,38,null);	// dd.setBounds(0,0,1050+i/2,600);
 				
 						
 					}
@@ -652,8 +664,10 @@ public void pa2(Graphics g)//中地圖
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-	g.drawImage(bi, 610,0,800,700,null);	
+	gt.drawImage(bi, 610,0,800,700,null);	
 	
+	g.clearRect(0, 0,1220, 650);
+	g.drawImage(tmp, 0,0,1220,650,null);	
 	//System.out.print("print pp"+dx+" "+dy+"\n");  
 
 }

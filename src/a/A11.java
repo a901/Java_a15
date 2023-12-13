@@ -296,6 +296,26 @@ public class A11 implements Serializable {
 		start_bn=bn;
 		//max_heap();
 		
+		 Thread t3= new Thread( new Runnable(){
+			 public void run(){	  try {			 
+				 for (int i = 1; i < 700;) { 	
+					 
+					 if(stop==0)
+					 day++;
+					 
+					 if(day>1)
+					 {
+						 newyear();
+						 day=0;
+					 }
+						 Thread.sleep(speed);
+				}
+			 } catch (Exception e) {  e.printStackTrace();
+			 } 	 } } );   
+		 t3.start();
+			 
+			 
+		 
 		map1();
 	}
 	
@@ -730,14 +750,10 @@ public class A11 implements Serializable {
 					 for (int i = 1; i < 700;) {
 						 
 						
-						 
-						 if(stop==0)
-						 day++;
-						 
-						 if(day>1)
+						 if(day==1)
 						 {
-							 newyear();
-							 day=0;
+							// newyear();
+							// day=0;
 							 
 							 a15.setbl(1,800,300,1200,40,1,"大地圖 世界人口:"+plp_num+" "+" 歷史累積人口:"+bn);
 							 a15.setbl(2,800,340,1200,40,1,"第"+year+"年" );
