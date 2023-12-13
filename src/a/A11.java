@@ -308,7 +308,7 @@ public class A11 implements Serializable {
 						 newyear();
 						 day=0;
 					 }
-						 Thread.sleep(speed);
+						 Thread.sleep(speed*2);
 				}
 			 } catch (Exception e) {  e.printStackTrace();
 			 } 	 } } );   
@@ -1562,6 +1562,11 @@ public class A11 implements Serializable {
 			//int all_all=b[x].count_descendants(x, 2, 0);
 			
 			
+			if (b[x].sex==0)
+				f_alive=0;
+			if (b[x].sex==1)
+				m_alive=0;
+					
 			f_num[fn]=f_alive;
 			for(int j=fn;j>0;j--)
 			{
